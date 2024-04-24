@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
-    let points = 0;
-    let elements = 0;
-    let bonus = 1;
-    let auto_click_value = 0;
-    let clickCount = 0;
-    let level = 1;
-    let fishIndex = 0;
-    
+    // localStorage.clear();
+    let points = parseInt(localStorage.getItem('points')) || 0;
+    let elements = parseInt(localStorage.getItem('elements')) || 0;
+    let bonus = parseInt(localStorage.getItem('bonus')) || 1;
+    let auto_click_value = parseInt(localStorage.getItem('auto_click_value')) || 0;
+    let level = parseInt(localStorage.getItem('level')) || 1;
+    let fishIndex = parseInt(localStorage.getItem('fishIndex')) || 0;
+
     const pointsDisplay = document.getElementById('points');
     const clickButton = document.getElementById('clickButton');
     const buyElementButton = document.getElementById('buyElement');
@@ -14,8 +14,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const fishName = document.getElementById('fishName');
     const fishImage = document.getElementById('fishImage');
     const fishPrice = document.getElementById('fishPrice');
-    const fish = document.getElementById('fish');
     const buyButton = document.getElementById('buyButton');
+
+    pointsDisplay.textContent = points;
 
     const fishDict = [
         {
@@ -26,17 +27,17 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             name : "anchois",
             image : "assets/anchois.png",
-            value : 1000
+            value : 100
         },
         {
             name : "bar",
             image : "assets/bar.png",
-            value : 2000
+            value : 500
         },
         {
             name : "cabillaud",
             image : "assets/cabillaud.png",
-            value : 4000
+            value : 1000
         }
     ];
 
@@ -73,8 +74,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function auto_click() {
+        if (auto_click_value > 0) {
         points += auto_click_value;
         pointsDisplay.textContent = points;
+        }
     }
     
     // Fonction pour acheter un élément
@@ -108,11 +111,14 @@ document.addEventListener('DOMContentLoaded', function() {
         buyElementButton.textContent = "Améliorer canne à pêche (+1 point/clic) | prix = " + level*50 + " points";
         buyAutoClickButton.textContent = "Acheter un trésor enfoui (+1 point/seconde) | prix = " + level*50 + " points";
     }  
-    
-    function updateFishSize() {
-        // Augmente la taille de l'image de poisson à chaque clic
-        const newSize = 50 + clickCount * 10; // Ajuste la taille selon le nombre de clics
-        fish.style.width = newSize + 'px';
+
+    function saveProgression() {
+        localStorage.setItem('points', points);
+        localStorage.setItem('elements', elements);
+        localStorage.setItem('bonus', bonus);
+        localStorage.setItem('auto_click_value', auto_click_value);
+        localStorage.setItem('level', level);
+        localStorage.setItem('fishIndex', fishIndex);
     }
 
     // Gestion des événements
@@ -124,11 +130,9 @@ document.addEventListener('DOMContentLoaded', function() {
     buyButton.addEventListener('click', buyFish);
     
     // Sauvegarde automatique
-    setInterval(function() {
-        localStorage.setItem('points', points);
-        localStorage.setItem('elements', elements);
-        localStorage.setItem('bonus', bonus);
-    }, 60000); // Sauvegarde toutes les minutes
+    setInterval(saveProgression, 10000);
+
 
     setInterval(auto_click, 1000);
+
 });

@@ -18,7 +18,7 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.boutique {
+.boutique, .poisson {
     flex: 1;
     padding: 20px;
     background-color: rgba(255, 255, 255, 0.2); 
@@ -60,3 +60,8 @@ button:hover {
     background-color: #45a049;
 }
 
+.poisson {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
