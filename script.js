@@ -5,13 +5,56 @@ document.addEventListener('DOMContentLoaded', function() {
     let auto_click_value = 0;
     let clickCount = 0;
     let level = 1;
+    let fishIndex = 0;
     
     const pointsDisplay = document.getElementById('points');
     const clickButton = document.getElementById('clickButton');
     const buyElementButton = document.getElementById('buyElement');
     const buyAutoClickButton = document.getElementById('buyTreasure');
+    const fishName = document.getElementById('fishName');
+    const fishImage = document.getElementById('fishImage');
+    const fishPrice = document.getElementById('fishPrice');
     const fish = document.getElementById('fish');
-    updateShopPrices();
+    const buyButton = document.getElementById('buyButton');
+
+    const fishDict = [
+        {
+            name : "sardine",
+            image : "assets/sardine.png",
+            value : 10
+        },
+        {
+            name : "anchois",
+            image : "assets/anchois.png",
+            value : 1000
+        },
+        {
+            name : "bar",
+            image : "assets/bar.png",
+            value : 2000
+        },
+        {
+            name : "cabillaud",
+            image : "assets/cabillaud.png",
+            value : 4000
+        }
+    ];
+
+    function updateFish() {
+        fishName.textContent = fishDict[fishIndex].name;
+        fishImage.src = fishDict[fishIndex].image;
+        fishPrice.textContent = fishDict[fishIndex].value;
+    }
+    function buyFish() {
+        if (points >= fishDict[fishIndex].value) {
+            points -= fishDict[fishIndex].value;
+            fishIndex++;
+            pointsDisplay.textContent = points;
+            updateFish();
+        } else {
+            alert("Vous n'avez pas assez de points pour acheter ce poisson.");
+        }
+    }
     
     // Fonction de clic
     function clic() {
@@ -73,9 +116,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Gestion des événements
+    updateFish();
+    updateShopPrices();
     clickButton.addEventListener('click', clic);
     buyElementButton.addEventListener('click', acheterElement);
     buyAutoClickButton.addEventListener('click', buyAutoClick);
+    buyButton.addEventListener('click', buyFish);
     
     // Sauvegarde automatique
     setInterval(function() {

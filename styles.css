@@ -1,8 +1,8 @@
 body {
     font-family: Arial, sans-serif;
     background-image: url('_bbf3a1b7-ca4e-46f6-a4da-156427a66e3a.jpg'); 
-    background-size: cover;
-    background-position: center;
+    background-size: 100% 100vh;
+    background-position: relative;
     background-position: ck;
     background-repeat: no-repeat;
     margin: 0;
