@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let fishIndex = parseInt(localStorage.getItem('fishIndex')) || 0;
 
     const pointsDisplay = document.getElementById('points');
-    const clickButton = document.getElementById('clickButton');
+    const clickButton = document.getElementById('fishingRodImage');
     const buyElementButton = document.getElementById('buyElement');
     const buyAutoClickButton = document.getElementById('buyTreasure');
     const fishName = document.getElementById('fishName');
@@ -120,14 +120,23 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('level', level);
         localStorage.setItem('fishIndex', fishIndex);
     }
-
+    
+    function showClick() {
+        this.style.transform = 'scale(1.2)';
+        setTimeout(() => {
+        this.style.transform = 'scale(1)';
+        }, 20);
+    }
+    
     // Gestion des événements
     updateFish();
     updateShopPrices();
     clickButton.addEventListener('click', clic);
+    clickButton.addEventListener('click', showClick);
     buyElementButton.addEventListener('click', acheterElement);
     buyAutoClickButton.addEventListener('click', buyAutoClick);
     buyButton.addEventListener('click', buyFish);
+
     
     // Sauvegarde automatique
     setInterval(saveProgression, 10000);
