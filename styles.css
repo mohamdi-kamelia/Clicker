@@ -1,9 +1,8 @@
 body {
     font-family: Arial, sans-serif;
-    background-image: url('_bbf3a1b7-ca4e-46f6-a4da-156427a66e3a.jpg'); 
-    background-size: cover;
-    background-position: center;
-    background-position: ck;
+    background-image: url('fond marinjpg.jpg'); 
+    background-size: 100% 100vh;
+    background-position: relative;
     background-repeat: no-repeat;
     margin: 0;
     padding: 0;
@@ -16,6 +15,39 @@ body {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#depthScale {
+    width: 40px; /* Largeur de l'échelle */
+    height: 100vh; /* Hauteur de l'échelle, prenant toute la hauteur de la fenêtre */
+    background-color: skyblue;
+    position: fixed; /* Position fixe pour rester toujours visible */
+    top: 0; /* Position en haut de la fenêtre */
+    right: 20px; /* Position à droite de la fenêtre */
+    border-radius: 4px; /* Coins arrondis */
+    overflow: hidden; /* Masquer le débordement pour une meilleure apparence */
+  }
+  
+.tick {
+    width: 100%; /* Largeur de la tick */
+    height: 1px; /* Hauteur de la tick */
+    background-color: #000; /* Couleur de la tick */
+    position: absolute; /* Position absolue pour positionner correctement */
+  }
+  
+.tick::after {
+    content: '';
+    position: absolute; /* Position absolue pour positionner correctement */
+    top: -10px; /* Positionnement de l'étiquette de la tick */
+    right: 0; /* Alignement à droite de l'étiquette */
+    font-size: 12px; /* Taille de la police de l'étiquette */
+  }
+.tickLabel {
+    position: absolute;
+    right: 0;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: #000;
 }
 
 .boutique {
@@ -35,6 +67,11 @@ body {
 
 h1 {
     color: #333;
+    margin-top: 0; 
+    position: absolute; 
+    top: 20px;
+    left: 50%; 
+    transform: translateX(-50%); 
 }
 
 p {
@@ -56,7 +93,4 @@ button:hover {
     background-color: #45a049;
 }
 
-button:hover {
-    background-color: #45a049;
-}
 
