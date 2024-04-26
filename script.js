@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Initialisation des variables à partir du stockage local ou avec des valeurs par défaut
-    localStorage.clear();
+    // localStorage.clear();
     let points = parseInt(localStorage.getItem('points')) || 0;
     let elements = parseInt(localStorage.getItem('elements')) || 0;
     let bonus = parseInt(localStorage.getItem('bonus')) || 1;
@@ -20,11 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const fishPrice = document.getElementById('fishPrice');
     const buyButton = document.getElementById('buyButton');
     const body = document.body;
-
-    const rodName = document.getElementById('rodName');
-    const rodImage = document.getElementById('rodImage');
-    const rodPrice = document.getElementById('rodPrice');
-    const rodDetails = document.getElementById('rodDetails');
 
     // Affichage des points
     pointsDisplay.textContent = points;
@@ -79,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
             fishingRodImage.src = "assets/canne.webp";
         }
         if (elements >= 2) {
-            fishingRodImage.src = "assets/fusil.jpg";
+            fishingRodImage.src = "assets/fusil.png";
         }
         
     }
@@ -96,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
             fishIndex++;
             pointsDisplay.textContent = points;
             updateFish();
-            if (fishIndex >= 1) { // Vérifie si le quatrième poisson a été pêché
+            if (fishIndex >= 4) { // Vérifie si le quatrième poisson a été pêché
                 body.style.backgroundImage = "url('assets/photos/Profondeur moyenne.jpg')";
             }
         } else {
