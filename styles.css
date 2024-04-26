@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-image: url('_bbf3a1b7-ca4e-46f6-a4da-156427a66e3a.jpg'); 
+    background-image: url('assets/photos/fond marinjpg.jpg'); 
     background-size: 100% 100vh;
     background-position: relative;
     background-position: ck;
@@ -17,6 +17,10 @@ body {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: rgba(255, 255, 255, 0.2);
+}
+#fishImage {
+    width: 100px; /* Modifier la largeur selon vos besoins */
+    height: auto; /* Garder le rapport hauteur/largeur d'origine */
 }
 
 .boutique, .content {
@@ -71,4 +75,17 @@ button:hover {
 
 button:hover {
     background-color: #45a049;
+}
+@keyframes bubble {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-100px) scale(0.5); opacity: 0; }
+}
+
+.bubble {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    animation: bubble 1s ease-out;
 }
