@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Initialisation des variables à partir du stockage local ou avec des valeurs par défaut
-    // localStorage.clear();
+    localStorage.clear();
     let points = parseInt(localStorage.getItem('points')) || 0;
     let elements = parseInt(localStorage.getItem('elements')) || 0;
     let bonus = parseInt(localStorage.getItem('bonus')) || 1;
@@ -20,6 +20,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const fishPrice = document.getElementById('fishPrice');
     const buyButton = document.getElementById('buyButton');
     const body = document.body;
+
+    const rodName = document.getElementById('rodName');
+    const rodImage = document.getElementById('rodImage');
+    const rodPrice = document.getElementById('rodPrice');
+    const rodDetails = document.getElementById('rodDetails');
 
     // Affichage des points
     pointsDisplay.textContent = points;
@@ -67,18 +72,16 @@ document.addEventListener('DOMContentLoaded', function() {
             value: 3000
         }
     ];
-
     // Mettre à jour l'image de la canne à pêche dans le DOM
-    function updateRodImage() {
-        // Chemin de l'image de la canne à pêche de base et de l'image améliorée
-        const baseRodImage = "assets/canne.webp";
-        const improvedRodImage = "assets/canne_a_peche_ameliore.jpg"; // Assurez-vous de mettre le chemin correct vers l'image de la nouvelle canne à pêche
 
-        // Vérifier si la canne à pêche a été améliorée
-        if (elements > 0) {
-            // Mettre à jour l'image de la canne à pêche avec l'image améliorée
-            clickButton.src = improvedRodImage;
+    function updateRodImage() {
+        if (elements == 1) {
+            fishingRodImage.src = "assets/canne.webp";
         }
+        if (elements >= 2) {
+            fishingRodImage.src = "assets/fusil.jpg";
+        }
+        
     }
 
     function updateFish() {
