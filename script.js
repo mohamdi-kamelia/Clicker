@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const fishName = document.getElementById('fishName');
     const fishImage = document.getElementById('fishImage');
     const fishPrice = document.getElementById('fishPrice');
-    const fishCoordinates = document.getElementById('fishCoordinates');
     const buyButton = document.getElementById('buyButton');
     const body = document.body;
 
@@ -30,50 +29,42 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             name: "sardine",
             image: "assets/sardine.png",
-            value: 10,
-            coordinates: "(30, 20)"
+            value: 10
         },
         {
             name: "anchois",
             image: "assets/anchois.png",
-            value: 100,
-            coordinates: "(50, 40)"
+            value: 100
         },
         {
             name: "bar",
             image: "assets/bar.png",
-            value: 500,
-            coordinates: "(70, 60)"
+            value: 500
         },
         {
             name: "cabillaud",
             image: "assets/cabillaud.png",
-            value: 1000,
-            coordinates: "(90, 80)"
+            value: 1000
         },
         {
             name: "Carpe",
             image: "assets/carpe-removebg-preview.png",
-            value: 1500,
-            coordinates: "(100, 110)"
+            value: 1500
         },
         {
             name: " Tambour",
             image: "assets/Tambour-removebg-preview.png",
-            value: 2000,
-            coordinates: "(120, 130)"
+            value: 2000
         },
         {
             name: "Thon",
             image: "assets/thon-removebg-preview.png",
-            value: 2500,
-            coordinates: "(140, 150)"
+            value: 2500
         },
         {
             name: "Truite arc-en-ciel",
             image: "assets/Truite_arc-en-ciel-removebg-preview.png",
-            value: 3000,
-            coordinates: "(160, 170)"
+            value: 3000
         }
     ];
 
@@ -89,6 +80,13 @@ document.addEventListener('DOMContentLoaded', function() {
             clickButton.src = improvedRodImage;
         }
     }
+
+    function updateFish() {
+        fishName.textContent = fishDict[fishIndex].name;
+        fishImage.src = fishDict[fishIndex].image;
+        fishPrice.textContent = fishDict[fishIndex].value;
+    }
+
     // Fonction d'achat de poisson
     function buyFish() {
         if (points >= fishDict[fishIndex].value) {
@@ -100,21 +98,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } else {
             alert("Vous n'avez pas assez de points pour acheter ce poisson.");
-        }
-    }
-
-    // Fonction d'achat d'élément
-    function acheterElement() {
-        if (points >= level * 50) {
-            points -= level * 50;
-            elements++;
-            bonus += 1;
-            level += 1;
-            pointsDisplay.textContent = points;
-            updateShopPrices();
-            updateRodImage(); // Appel de la fonction pour mettre à jour l'image de la canne à pêche
-        } else {
-            alert("Vous n'avez pas assez de points pour acheter cet élément.");
         }
     }
     
@@ -208,6 +191,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Gestion des événements
     updateShopPrices();
+    updateFish();
     clickButton.addEventListener('click', clic);
     clickButton.addEventListener('click', showClick);
     clickButton.addEventListener('click', createBubble);
