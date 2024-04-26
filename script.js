@@ -15,8 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const fishImage = document.getElementById('fishImage');
     const fishPrice = document.getElementById('fishPrice');
     const buyButton = document.getElementById('buyButton');
-    const elementPrice = Math.floor(level * 50 * Math.pow(1.1, elements)); // Exponential increase
-    const autoClickPrice = Math.floor(level * 50 * Math.pow(1.1, auto_click_value)); // Exponential increase
 
     pointsDisplay.textContent = points;
 
@@ -77,8 +75,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Fonction pour acheter un élément
     function acheterElement() {
-        if (points >= elementPrice) {
-            points -= elementPrice;
+        if (points >= Math.floor(level * 50 * Math.pow(1.1, elements)) ){
+            points -= Math.floor(level * 50 * Math.pow(1.1, elements))
             elements++;
             bonus += 1;
             level += 1;
@@ -90,8 +88,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function buyAutoClick() {
-        if (points >= autoClickPrice) {
-            points -= autoClickPrice;
+        if (points >= Math.floor(level * 50 * Math.pow(1.1, auto_click_value))) {
+            points -= Math.floor(level * 50 * Math.pow(1.1, auto_click_value));
             auto_click_value++;
             level += 1;
             pointsDisplay.textContent = points;
@@ -103,6 +101,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateShopPrices() {
+        const elementPrice = Math.floor(level * 50 * Math.pow(1.1, elements)); // Exponential increase
+        const autoClickPrice = Math.floor(level * 50 * Math.pow(1.1, auto_click_value)); // Exponential increase
         buyElementButton.textContent = "Améliorer canne à pêche (+1 point/clic) | prix = " + elementPrice + " points";
         buyAutoClickButton.textContent = "Acheter un trésor enfoui (+1 point/seconde) | prix = " + autoClickPrice + " points";
     }  
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 20);
     }
 
-    function createBubble(x, y) {
+    function createBubble() {
         const bubble = document.createElement('div');
         bubble.className = 'bubble';
 
