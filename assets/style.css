@@ -1,0 +1,74 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('_bbf3a1b7-ca4e-46f6-a4da-156427a66e3a.jpg'); 
+    background-size: 100% 100vh;
+    background-position: relative;
+    background-position: ck;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    max-width: 100%; 
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.boutique, .content {
+    flex: 1;
+    padding: 20px;     
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.poisson {
+    flex: 1;
+    padding: 20px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    color: #333;
+    display: flex;
+    justify-content: center;
+}
+
+p {
+    margin-bottom: 20px;
+    font-size: large;
+    color: rgb(255, 0, 0);
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+button:hover {
+    background-color: #45a049;
+}
