@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const fishName = document.getElementById('fishName');
     const fishImage = document.getElementById('fishImage');
     const fishPrice = document.getElementById('fishPrice');
+    const fishCoordinates = document.getElementById('fishCoordinates');
     const buyButton = document.getElementById('buyButton');
 
     // Affichage des points
@@ -27,30 +28,34 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             name: "sardine",
             image: "sardine.png",
-            value: 10
+            value: 10,
+            coordinates: "(30, 20)"
         },
         {
             name: "anchois",
             image: "anchois.png",
-            value: 100
+            value: 100,
+            coordinates: "(50, 40)"
         },
         {
             name: "bar",
             image: "bar.png",
-            value: 500
+            value: 500,
+            coordinates: "(70, 60)"
         },
         {
             name: "cabillaud",
             image: "cabillaud.png",
-            value: 1000
+            value: 1000,
+            coordinates: "(90, 80)"
         }
     ];
 
     // Mettre à jour l'image de la canne à pêche dans le DOM
     function updateRodImage() {
         // Chemin de l'image de la canne à pêche de base et de l'image améliorée
-        const baseRodImage = "cane.webp";
-        const improvedRodImage = "canne_a_peche_amelioré.jpg"; // Assurez-vous de mettre le chemin correct vers l'image de la nouvelle canne à pêche
+        const baseRodImage = "canne.webp";
+        const improvedRodImage = "cane_a_peche.png"; // Assurez-vous de mettre le chemin correct vers l'image de la nouvelle canne à pêche
 
         // Vérifier si la canne à pêche a été améliorée
         if (elements > 0) {
@@ -145,6 +150,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 20);
     }
 
+    // Mise à jour des informations sur le poisson
+    function updateFish() {
+        fishName.textContent = fishDict[fishIndex].name;
+        fishImage.src = fishDict[fishIndex].image;
+        fishPrice.textContent = fishDict[fishIndex].value;
+        fishCoordinates.textContent = "Coordonnées : " + fishDict[fishIndex].coordinates;
+    }
+
     // Gestion des événements
     updateShopPrices();
     clickButton.addEventListener('click', clic);
@@ -158,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Bonus automatique
     setInterval(auto_click, 1000);
-
 });
+
 
 

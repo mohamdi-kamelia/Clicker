@@ -11,12 +11,9 @@
     <div class="container">
 
         <div class="boutique">
-            <div class="boutique">
-                <h2>Boutique</h2>
-                <button id="buyElement"></button>
-                <button id="buyTreasure"></button>
-            </div>
-            
+            <h2>Boutique</h2>
+            <button id="buyElement">Améliorer canne à pêche (+1 point/clic)</button>
+            <button id="buyTreasure">Acheter un trésor enfoui (+1 point/seconde)</button>
         </div>
 
         <div class="content">            
@@ -24,11 +21,21 @@
             <img id="fishingRodImage" width="200" height="200" src="canne.webp">
         </div>
 
-        <div class= "poisson">
-                <h1 id="fishName"></h1>
-                <img id="fishImage">
-                <h1 id="fishPrice"></h1>
-                <button id="buyButton">Pêcher le poisson</button>
+        <div class="poisson">
+            <h1 id="fishName"></h1>
+            <img id="fishImage">
+            <h1 id="fishPrice"></h1>
+            <p id="fishCoordinates"></p>
+            <button id="buyButton">Pêcher le poisson</button>
+        </div>
+
+        <!-- Nouvelle div pour la canne à pêche -->
+        <div class="canne">
+            <h1 id="rodName"></h1>
+            <img id="rodImage">
+            <h1 id="rodPrice"></h1>
+            <p id="rodDetails"></p>
+            <button id="buyRodButton">Acheter cette canne</button>
         </div>
         
     </div>
