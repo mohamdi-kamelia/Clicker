@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const fishImage = document.getElementById('fishImage');
     const fishPrice = document.getElementById('fishPrice');
     const buyButton = document.getElementById('buyButton');
+    const elementPrice = Math.floor(level * 50 * Math.pow(1.1, elements)); // Exponential increase
+    const autoClickPrice = Math.floor(level * 50 * Math.pow(1.1, auto_click_value)); // Exponential increase
 
     pointsDisplay.textContent = points;
 
@@ -48,7 +50,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     function buyFish() {
         if (points >= fishDict[fishIndex].value) {
-            points -= fishDict[fishIndex].value;
             fishIndex++;
             pointsDisplay.textContent = points;
             updateFish();
@@ -62,28 +63,22 @@ document.addEventListener('DOMContentLoaded', function() {
         points += bonus;
         pointsDisplay.textContent = points;
         clickCount++;
-        updateFishSize();
-
-        // Vérifier si le nombre de clics atteint 500
-        if (clickCount >= 500) {
-            // Afficher un message de victoire
-            alert("Félicitations ! Vous avez atteint 500 clics. Vous avez gagné !");
-            // Réinitialiser le nombre de clics pour éviter que le message de victoire ne se répète
-            clickCount = 0;
         }
-    }
 
     function auto_click() {
         if (auto_click_value > 0) {
-        points += auto_click_value;
-        pointsDisplay.textContent = points;
+            points += auto_click_value;
+            pointsDisplay.textContent = points;
+            for (let i = 0; i < auto_click_value; i++) {
+                createBubble();
+            };
         }
     }
     
     // Fonction pour acheter un élément
     function acheterElement() {
-        if (points >= level*50) {
-            points -= level*50;
+        if (points >= elementPrice) {
+            points -= elementPrice;
             elements++;
             bonus += 1;
             level += 1;
@@ -95,8 +90,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function buyAutoClick() {
-        if (points >= level *50) {
-            points -= level *50;
+        if (points >= autoClickPrice) {
+            points -= autoClickPrice;
             auto_click_value++;
             level += 1;
             pointsDisplay.textContent = points;
@@ -108,8 +103,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateShopPrices() {
-        buyElementButton.textContent = "Améliorer canne à pêche (+1 point/clic) | prix = " + level*50 + " points";
-        buyAutoClickButton.textContent = "Acheter un trésor enfoui (+1 point/seconde) | prix = " + level*50 + " points";
+        buyElementButton.textContent = "Améliorer canne à pêche (+1 point/clic) | prix = " + elementPrice + " points";
+        buyAutoClickButton.textContent = "Acheter un trésor enfoui (+1 point/seconde) | prix = " + autoClickPrice + " points";
     }  
 
     function saveProgression() {
@@ -127,12 +122,30 @@ document.addEventListener('DOMContentLoaded', function() {
         this.style.transform = 'scale(1)';
         }, 20);
     }
+
+    function createBubble(x, y) {
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+
+        const screenWidth = window.innerWidth;
+        const randomX = Math.random() * screenWidth;
+
+        bubble.style.left = randomX + 'px';
+        bubble.style.top = '700px';
+        document.body.appendChild(bubble);
+    
+        // Remove the bubble element after the animation ends
+        bubble.addEventListener('animationend', () => {
+            bubble.remove();
+        });
+    }
     
     // Gestion des événements
     updateFish();
     updateShopPrices();
     clickButton.addEventListener('click', clic);
     clickButton.addEventListener('click', showClick);
+    clickButton.addEventListener('click', createBubble);
     buyElementButton.addEventListener('click', acheterElement);
     buyAutoClickButton.addEventListener('click', buyAutoClick);
     buyButton.addEventListener('click', buyFish);
