@@ -1,8 +1,9 @@
 body {
     font-family: Arial, sans-serif;
-    background-image: url('fond marinjpg.jpg'); 
+    background-image: url('assets/photos/fond marinjpg.jpg'); 
     background-size: 100% 100vh;
     background-position: relative;
+    background-position: ck;
     background-repeat: no-repeat;
     margin: 0;
     padding: 0;
@@ -50,7 +51,8 @@ body {
     color: #000;
 }
 
-.boutique {
+
+.boutique, .poisson {
     flex: 1;
     padding: 20px;
     background-color: rgba(255, 255, 255, 0.2); 
@@ -94,3 +96,8 @@ button:hover {
 }
 
 
+.poisson {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}

@@ -1,81 +1,146 @@
 document.addEventListener('DOMContentLoaded', function() {
-    let points = 0;
-    let elements = 0;
-    let bonus = 1;
-    let clickCount = 0;
+    let points = parseInt(localStorage.getItem('points')) || 0;
+    let elements = parseInt(localStorage.getItem('elements')) || 0;
+    let bonus = parseInt(localStorage.getItem('bonus')) || 1;
+    let auto_click_value = parseInt(localStorage.getItem('auto_click_value')) || 0;
+    let level = parseInt(localStorage.getItem('level')) || 1;
+    let fishIndex = parseInt(localStorage.getItem('fishIndex')) || 0;
 
     const pointsDisplay = document.getElementById('points');
     const clickButton = document.getElementById('clickButton');
     const buyElementButton = document.getElementById('buyElement');
-    const buyBonusButton = document.getElementById('buyBonus');
-    const depthDisplay = document.getElementById('depthScale'); // Élément pour afficher l'échelle de profondeur
+    const buyAutoClickButton = document.getElementById('buyTreasure');
+    const fishName = document.getElementById('fishName');
+    const fishImage = document.getElementById('fishImage');
+    const fishPrice = document.getElementById('fishPrice');
+    const buyButton = document.getElementById('buyButton');
 
-    // Fonction de clic
-    function clic() {
-        points += bonus;
-        pointsDisplay.textContent = points;
-        clickCount++;
-        updateFishSize();
-        updateDepth(); // Mise à jour de la profondeur
+    pointsDisplay.textContent = points;
 
-        // Vérifier si le nombre de clics atteint 500
-        if (clickCount >= 500) {
-            // Afficher un message de victoire
-            alert("Félicitations ! Vous avez atteint 500 clics. Vous avez gagné !");
-            // Réinitialiser le nombre de clics pour éviter que le message de victoire ne se répète
-            clickCount = 0;
+    const fishDict = [
+        {
+            name: "sardine",
+            image: "assets/sardine.png",
+            value: 10
+        },
+        {
+            name: "anchois",
+            image: "assets/anchois.png",
+            value: 100
+        },
+        {
+            name: "bar",
+            image: "assets/bar.png",
+            value: 500
+        },
+        {
+            name: "cabillaud",
+            image: "assets/cabillaud.png",
+            value: 1000
+        },
+        {
+            name: "new_fish_1",
+            image: "assets/new_fish_1.png",
+            value: 1500
+        },
+        {
+            name: "new_fish_2",
+            image: "assets/new_fish_2.png",
+            value: 2000
+        }
+    ];
+
+    function updateFish() {
+        fishName.textContent = fishDict[fishIndex].name;
+        fishImage.src = fishDict[fishIndex].image;
+        fishPrice.textContent = fishDict[fishIndex].value;
+    }
+
+    function buyFish() {
+        if (points >= fishDict[fishIndex].value) {
+            points -= fishDict[fishIndex].value;
+            fishIndex++;
+            pointsDisplay.textContent = points;
+            updateFish();
+            changeBackground();
+        } else {
+            alert("Vous n'avez pas assez de points pour acheter ce poisson.");
         }
     }
 
-    // Fonction pour acheter un élément
+    function clic() {
+        points += bonus;
+        pointsDisplay.textContent = points;
+        updateFishSize();
+        if (checkAllFishBought()) {
+            changeBackground();
+        }
+    }
+
+    function auto_click() {
+        if (auto_click_value > 0) {
+            points += auto_click_value;
+            pointsDisplay.textContent = points;
+        }
+    }
+
     function acheterElement() {
-        if (points >= 10) {
-            points -= 10;
+        if (points >= level * 50) {
+            points -= level * 50;
             elements++;
             bonus += 1;
+            level += 1;
             pointsDisplay.textContent = points;
+            updateShopPrices();
         } else {
             alert("Vous n'avez pas assez de points pour acheter cet élément.");
         }
     }
 
-    // Fonction pour acheter un bonus
-    function acheterBonus() {
-        if (points >= 50) {
-            points -= 50;
-            bonus *= 2;
+    function buyAutoClick() {
+        if (points >= level * 50) {
+            points -= level * 50;
+            auto_click_value++;
+            level += 1;
             pointsDisplay.textContent = points;
+            updateShopPrices();
         } else {
             alert("Vous n'avez pas assez de points pour acheter ce bonus.");
         }
     }
-   
-    
-    function updateDepth() {
-        // Ajouter les numéros de profondeur à l'échelle
-        depthDisplay.innerHTML = ''; // Effacer le contenu existant
-        for (let i = 300; i >= 0; i -= 50) { // Commencer à 300 et diminuer de 50 à chaque fois jusqu'à 0
-            const tickLabel = document.createElement('div');
-            tickLabel.classList.add('tickLabel');
-            tickLabel.textContent = i + "m";
-            tickLabel.style.bottom = `${((300 - i) / 300 * 100)}%`; // Positionner le numéro en fonction de la profondeur
-            depthDisplay.appendChild(tickLabel);
-        }
+
+    function updateShopPrices() {
+        buyElementButton.textContent = "Améliorer canne à pêche (+1 point/clic) | prix = " + level * 50 + " points";
+        buyAutoClickButton.textContent = "Acheter un trésor enfoui (+1 point/seconde) | prix = " + level * 50 + " points";
     }
 
-
-    // Gestion des événements
-    clickButton.addEventListener('click', clic);
-    buyElementButton.addEventListener('click', acheterElement);
-    buyBonusButton.addEventListener('click', acheterBonus);
-
-    // Appeler la fonction pour mettre à jour la profondeur initiale
-    updateDepth();
-
-    // Sauvegarde automatique
-    setInterval(function() {
+    function saveProgression() {
         localStorage.setItem('points', points);
         localStorage.setItem('elements', elements);
         localStorage.setItem('bonus', bonus);
-    }, 60000); // Sauvegarde toutes les minutes
+        localStorage.setItem('auto_click_value', auto_click_value);
+        localStorage.setItem('level', level);
+        localStorage.setItem('fishIndex', fishIndex);
+    }
+
+    function checkAllFishBought() {
+        return fishIndex >= fishDict.length;
+    }
+
+    function changeBackground() {
+        if (checkAllFishBought()) {
+            document.body.style.backgroundImage = "(jpg'assets/photos/Profondeur moyenne.jpg')";
+        }
+    }
+
+    updateFish();
+    updateShopPrices();
+    clickButton.addEventListener('click', clic);
+    buyElementButton.addEventListener('click', acheterElement);
+    buyAutoClickButton.addEventListener('click', buyAutoClick);
+    buyButton.addEventListener('click', buyFish);
+
+    setInterval(saveProgression, 10000);
+    setInterval(auto_click, 1000);
+
 });
