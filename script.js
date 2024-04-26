@@ -18,8 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const fishName = document.getElementById('fishName');
     const fishImage = document.getElementById('fishImage');
     const fishPrice = document.getElementById('fishPrice');
-    const fishCoordinates = document.getElementById('fishCoordinates');
     const buyButton = document.getElementById('buyButton');
+    const clickSound = document.getElementById('clickSound');
     const body = document.body;
 
     // Affichage des points
@@ -31,51 +31,66 @@ document.addEventListener('DOMContentLoaded', function() {
             name: "sardine",
             image: "assets/sardine.png",
             value: 10,
-            coordinates: "(30, 20)"
         },
         {
             name: "anchois",
             image: "assets/anchois.png",
             value: 100,
-            coordinates: "(50, 40)"
         },
         {
             name: "bar",
             image: "assets/bar.png",
             value: 500,
-            coordinates: "(70, 60)"
         },
         {
             name: "cabillaud",
             image: "assets/cabillaud.png",
             value: 1000,
-            coordinates: "(90, 80)"
         },
         {
             name: "Carpe",
             image: "assets/carpe-removebg-preview.png",
             value: 1500,
-            coordinates: "(100, 110)"
         },
         {
             name: " Tambour",
             image: "assets/Tambour-removebg-preview.png",
             value: 2000,
-            coordinates: "(120, 130)"
         },
         {
             name: "Thon",
             image: "assets/thon-removebg-preview.png",
             value: 2500,
-            coordinates: "(140, 150)"
         },
         {
             name: "Truite arc-en-ciel",
             image: "assets/Truite_arc-en-ciel-removebg-preview.png",
             value: 3000,
-            coordinates: "(160, 170)"
-        }
+        },
+        {
+            name: "Aiguillat commun",
+            image: "assets/Aiguillat_commun-removebg-preview.png",
+            value: 3500,
+        },
+        {
+            name: "Anguille",
+            image: "assets/Anguille-removebg-preview.png",
+            value: 4000,
+        },
+        {
+            name: "Baliste",
+            image: "assets/Baliste_-removebg-preview.png",
+            value: 4500,
+
+        },
+        {
+            name: "Castagnole",
+            image: "assets/Grande_Castagnole-removebg-preview.png",
+            value: 5000,
+        },
+
     ];
+
 
     // Mettre à jour l'image de la canne à pêche dans le DOM
     function updateRodImage() {
@@ -89,6 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
             clickButton.src = improvedRodImage;
         }
     }
+
     // Fonction d'achat de poisson
     function buyFish() {
         if (points >= fishDict[fishIndex].value) {
@@ -96,13 +112,21 @@ document.addEventListener('DOMContentLoaded', function() {
             fishIndex++;
             pointsDisplay.textContent = points;
             updateFish();
-            if (fishIndex >= 1) { // Vérifie si le quatrième poisson a été pêché
-                body.style.backgroundImage = "url('assets/photos/Profondeur moyenne.jpg')";
+            if (fishIndex === 1) { // Vérifie si le quatrième poisson a été pêché
+                changeBackground('assets/photos/Profondeur moyenne.jpg');
+            } else if (fishIndex === 2) { // Vérifie si le huitième poisson a été pêché
+                changeBackground('assets/photos/les-abysses.jpg');
             }
         } else {
             alert("Vous n'avez pas assez de points pour acheter ce poisson.");
         }
     }
+
+    // Fonction pour changer l'image de fond
+    function changeBackground(imageUrl) {
+        body.style.backgroundImage = "url('" + imageUrl + "')";
+    }
+
 
     // Fonction d'achat d'élément
     function acheterElement() {
@@ -137,6 +161,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert("Félicitations ! Vous avez atteint 500 clics. Vous avez gagné !");
             clickCount = 0; // Réinitialisation du nombre de clics
         }
+        clickSound.play();
        
     }
     
@@ -218,7 +243,6 @@ document.addEventListener('DOMContentLoaded', function() {
     updateShopPrices();
     clickButton.addEventListener('click', clic);
     clickButton.addEventListener('click', showClick);
-    clickButton.addEventListener('click', createBubble);
     buyElementButton.addEventListener('click', acheterElement);
     buyAutoClickButton.addEventListener('click', buyAutoClick);
     buyButton.addEventListener('click', buyFish);
