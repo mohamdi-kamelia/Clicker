@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    localStorage.clear();
     // Initialisation des variables à partir du stockage local ou avec des valeurs par défaut
     let points = parseInt(localStorage.getItem('points')) || 0;
     let elements = parseInt(localStorage.getItem('elements')) || 0;
@@ -19,6 +20,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const fishPrice = document.getElementById('fishPrice');
     const fishCoordinates = document.getElementById('fishCoordinates');
     const buyButton = document.getElementById('buyButton');
+    const rodName = document.getElementById('rodName');
+    const rodImage = document.getElementById('rodImage');
+    const rodPrice = document.getElementById('rodPrice');
+    const rodDetails = document.getElementById('rodDetails');
 
     // Affichage des points
     pointsDisplay.textContent = points;
@@ -40,14 +45,26 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             name: "bar",
             image: "bar.png",
-            value: 500,
+            value: 150,
             coordinates: "(70, 60)"
         },
         {
             name: "cabillaud",
             image: "cabillaud.png",
-            value: 1000,
+            value: 200,
             coordinates: "(90, 80)"
+        }
+    ];
+    const canneDict = [
+        {
+            models: "canne simple",
+            image : "canne.webp",
+            value : 100, 
+        },
+        {
+            models: "canne amelioré",
+            image : "cane_a_peche.png",
+            value : 150,  
         }
     ];
 
@@ -66,8 +83,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Fonction d'achat d'élément
     function acheterElement() {
-        if (points >= level * 50) {
-            points -= level * 50;
+        if (points >= canneDict[1].value) { // canneDict[1] représente la nouvelle canne à pêche
+            points -= canneDict[1].value;
             elements++;
             bonus += 1;
             level += 1;
@@ -166,12 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
     buyAutoClickButton.addEventListener('click', buyAutoClick);
     buyButton.addEventListener('click', buyFish);
 
-    // Sauvegarde automatique toutes les 10 secondes
-    setInterval(saveProgression, 10000);
-
     // Bonus automatique
     setInterval(auto_click, 1000);
+
 });
-
-
-
