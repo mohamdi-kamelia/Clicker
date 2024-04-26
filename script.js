@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Initialisation des variables à partir du stockage local ou avec des valeurs par défaut
-    localStorage.clear();
+    // localStorage.clear();
     let points = parseInt(localStorage.getItem('points')) || 0;
     let elements = parseInt(localStorage.getItem('elements')) || 0;
     let bonus = parseInt(localStorage.getItem('bonus')) || 1;
@@ -71,8 +71,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Mettre à jour l'image de la canne à pêche dans le DOM
     function updateRodImage() {
         // Chemin de l'image de la canne à pêche de base et de l'image améliorée
-        const baseRodImage = "canne.webp";
-        const improvedRodImage = "cane_a_peche.png"; // Assurez-vous de mettre le chemin correct vers l'image de la nouvelle canne à pêche
+        const baseRodImage = "assets/canne.webp";
+        const improvedRodImage = "assets/canne_a_peche_ameliore.jpg"; // Assurez-vous de mettre le chemin correct vers l'image de la nouvelle canne à pêche
 
         // Vérifier si la canne à pêche a été améliorée
         if (elements > 0) {
@@ -127,6 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
             level += 1;
             pointsDisplay.textContent = points;
             updateShopPrices();
+            updateRodImage();
         } else {
             alert("Vous n'avez pas assez de points pour acheter cet élément.");
         }
