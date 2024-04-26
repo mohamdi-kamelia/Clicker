@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Initialisation des variables à partir du stockage local ou avec des valeurs par défaut
-    localStorage.clear();
     let points = parseInt(localStorage.getItem('points')) || 0;
     let elements = parseInt(localStorage.getItem('elements')) || 0;
     let bonus = parseInt(localStorage.getItem('bonus')) || 1;
@@ -18,9 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const fishName = document.getElementById('fishName');
     const fishImage = document.getElementById('fishImage');
     const fishPrice = document.getElementById('fishPrice');
-    const fishCoordinates = document.getElementById('fishCoordinates');
     const buyButton = document.getElementById('buyButton');
-    const body = document.body;
 
     // Affichage des points
     pointsDisplay.textContent = points;
@@ -29,77 +26,36 @@ document.addEventListener('DOMContentLoaded', function() {
     const fishDict = [
         {
             name: "sardine",
-            image: "assets/sardine.png",
-            value: 10,
-            coordinates: "(30, 20)"
+            image: "sardine.png",
+            value: 10
         },
         {
             name: "anchois",
-            image: "assets/anchois.png",
-            value: 100,
-            coordinates: "(50, 40)"
+            image: "anchois.png",
+            value: 100
         },
         {
             name: "bar",
-            image: "assets/bar.png",
-            value: 500,
-            coordinates: "(70, 60)"
+            image: "bar.png",
+            value: 500
         },
         {
             name: "cabillaud",
-            image: "assets/cabillaud.png",
-            value: 1000,
-            coordinates: "(90, 80)"
-        },
-        {
-            name: "Carpe",
-            image: "assets/carpe-removebg-preview.png",
-            value: 1500,
-            coordinates: "(100, 110)"
-        },
-        {
-            name: " Tambour",
-            image: "assets/Tambour-removebg-preview.png",
-            value: 2000,
-            coordinates: "(120, 130)"
-        },
-        {
-            name: "Thon",
-            image: "assets/thon-removebg-preview.png",
-            value: 2500,
-            coordinates: "(140, 150)"
-        },
-        {
-            name: "Truite arc-en-ciel",
-            image: "assets/Truite_arc-en-ciel-removebg-preview.png",
-            value: 3000,
-            coordinates: "(160, 170)"
+            image: "cabillaud.png",
+            value: 1000
         }
     ];
 
     // Mettre à jour l'image de la canne à pêche dans le DOM
     function updateRodImage() {
         // Chemin de l'image de la canne à pêche de base et de l'image améliorée
-        const baseRodImage = "canne.webp";
-        const improvedRodImage = "cane_a_peche.png"; // Assurez-vous de mettre le chemin correct vers l'image de la nouvelle canne à pêche
+        const baseRodImage = "cane.webp";
+        const improvedRodImage = "canne_a_peche_amelioré.jpg"; // Assurez-vous de mettre le chemin correct vers l'image de la nouvelle canne à pêche
 
         // Vérifier si la canne à pêche a été améliorée
         if (elements > 0) {
             // Mettre à jour l'image de la canne à pêche avec l'image améliorée
             clickButton.src = improvedRodImage;
-        }
-    }
-    // Fonction d'achat de poisson
-    function buyFish() {
-        if (points >= fishDict[fishIndex].value) {
-            fishIndex++;
-            pointsDisplay.textContent = points;
-            updateFish();
-            if (fishIndex >= 1) { // Vérifie si le quatrième poisson a été pêché
-                body.style.backgroundImage = "url('assets/photos/Profondeur moyenne.jpg')";
-            }
-        } else {
-            alert("Vous n'avez pas assez de points pour acheter ce poisson.");
         }
     }
 
@@ -117,41 +73,43 @@ document.addEventListener('DOMContentLoaded', function() {
             alert("Vous n'avez pas assez de points pour acheter cet élément.");
         }
     }
-    
+
+    // Fonction d'achat de poisson
+    function buyFish() {
+        if (points >= fishDict[fishIndex].value) {
+            points -= fishDict[fishIndex].value;
+            fishIndex++;
+            pointsDisplay.textContent = points;
+            updateFish();
+        } else {
+            alert("Vous n'avez pas assez de points pour acheter ce poisson.");
+        }
+    }
+
     // Fonction de clic
     function clic() {
         points += bonus * bonusMultiplier; // Points gagnés = bonus * multiplicateur de bonus
         pointsDisplay.textContent = points;
         clickCount++;
+        updateFishSize();
+
+        // Vérification si le score augmente de 100 points
+        if (clickCount % 100 === 0) {
+            // Double le multiplicateur de bonus pour le prochain clic
+            bonusMultiplier *= 2;
         }
 
-    function auto_click() {
-        if (auto_click_value > 0) {
-            points += auto_click_value;
-            pointsDisplay.textContent = points;
-            for (let i = 0; i < auto_click_value; i++) {
-                createBubble();
-            };
-        }
-    }
-    
-    // Fonction pour acheter un élément
-    function acheterElement() {
-        if (points >= Math.floor(level * 50 * Math.pow(1.1, elements)) ){
-            points -= Math.floor(level * 50 * Math.pow(1.1, elements))
-            elements++;
-            bonus += 1;
-            level += 1;
-            pointsDisplay.textContent = points;
-            updateShopPrices();
-        } else {
-            alert("Vous n'avez pas assez de points pour acheter cet élément.");
+        // Vérification si le nombre de clics atteint 500
+        if (clickCount >= 500) {
+            alert("Félicitations ! Vous avez atteint 500 clics. Vous avez gagné !");
+            clickCount = 0; // Réinitialisation du nombre de clics
         }
     }
 
+    // Fonction d'achat de bonus automatique
     function buyAutoClick() {
-        if (points >= Math.floor(level * 50 * Math.pow(1.1, auto_click_value))) {
-            points -= Math.floor(level * 50 * Math.pow(1.1, auto_click_value));
+        if (points >= level * 50) {
+            points -= level * 50;
             auto_click_value++;
             level += 1;
             pointsDisplay.textContent = points;
@@ -163,11 +121,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Mise à jour des prix dans la boutique
     function updateShopPrices() {
-        const elementPrice = Math.floor(level * 50 * Math.pow(1.1, elements)); // Exponential increase
-        const autoClickPrice = Math.floor(level * 50 * Math.pow(1.1, auto_click_value)); // Exponential increase
-        buyElementButton.textContent = "Améliorer canne à pêche (+1 point/clic) | prix = " + elementPrice + " points";
-        buyAutoClickButton.textContent = "Acheter un trésor enfoui (+1 point/seconde) | prix = " + autoClickPrice + " points";
-    }  
+        buyElementButton.textContent = "Améliorer canne à pêche (+1 point/clic) | prix = " + level * 50 + " points";
+        buyAutoClickButton.textContent = "Acheter un trésor enfoui (+1 point/seconde) | prix = " + level * 50 + " points";
+    }
 
     // Fonction de sauvegarde de la progression
     function saveProgression() {
@@ -189,28 +145,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 20);
     }
 
-    function createBubble() {
-        const bubble = document.createElement('div');
-        bubble.className = 'bubble';
-
-        const screenWidth = window.innerWidth;
-        const randomX = Math.random() * screenWidth;
-
-        bubble.style.left = randomX + 'px';
-        bubble.style.top = '700px';
-        document.body.appendChild(bubble);
-    
-        // Remove the bubble element after the animation ends
-        bubble.addEventListener('animationend', () => {
-            bubble.remove();
-        });
-    }
-    
     // Gestion des événements
     updateShopPrices();
     clickButton.addEventListener('click', clic);
     clickButton.addEventListener('click', showClick);
-    clickButton.addEventListener('click', createBubble);
     buyElementButton.addEventListener('click', acheterElement);
     buyAutoClickButton.addEventListener('click', buyAutoClick);
     buyButton.addEventListener('click', buyFish);
@@ -220,6 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Bonus automatique
     setInterval(auto_click, 1000);
+
 });
 
 
