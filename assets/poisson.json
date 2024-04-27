@@ -1,0 +1,6 @@
+[
+    { "name": "sardine", "image": "sardine.png", "value": 10, "coordinates": "(30, 20)" },
+    { "name": "anchois", "image": "anchois.png", "value": 100, "coordinates": "(50, 40)" },
+    { "name": "bar", "image": "bar.png", "value": 150, "coordinates": "(70, 60)" },
+    { "name": "cabillaud", "image": "cabillaud.png", "value": 200, "coordinates": "(90, 80)" }
+]

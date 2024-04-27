@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    localStorage.clear();
-    // Initialisation des variables à partir du stockage local ou avec des valeurs par défaut
+    localStorage.clear(); // À commenter si vous souhaitez conserver les données entre les sessions.
     let points = parseInt(localStorage.getItem('points')) || 0;
     let elements = parseInt(localStorage.getItem('elements')) || 0;
     let bonus = parseInt(localStorage.getItem('bonus')) || 1;
@@ -10,7 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let clickCount = parseInt(localStorage.getItem('clickCount')) || 0;
     let bonusMultiplier = parseInt(localStorage.getItem('bonusMultiplier')) || 1;
 
-    // Éléments du DOM
     const pointsDisplay = document.getElementById('points');
     const clickButton = document.getElementById('fishingRodImage');
     const buyElementButton = document.getElementById('buyElement');
@@ -19,171 +17,102 @@ document.addEventListener('DOMContentLoaded', function() {
     const fishImage = document.getElementById('fishImage');
     const fishPrice = document.getElementById('fishPrice');
     const fishCoordinates = document.getElementById('fishCoordinates');
-    const buyButton = document.getElementById('buyButton');
-    const rodName = document.getElementById('rodName');
-    const rodImage = document.getElementById('rodImage');
-    const rodPrice = document.getElementById('rodPrice');
-    const rodDetails = document.getElementById('rodDetails');
 
-    // Affichage des points
-    pointsDisplay.textContent = points;
-
-    // Dictionnaire des poissons avec les chemins des images corrects
     const fishDict = [
-        {
-            name: "sardine",
-            image: "sardine.png",
-            value: 10,
-            coordinates: "(30, 20)"
-        },
-        {
-            name: "anchois",
-            image: "anchois.png",
-            value: 100,
-            coordinates: "(50, 40)"
-        },
-        {
-            name: "bar",
-            image: "bar.png",
-            value: 150,
-            coordinates: "(70, 60)"
-        },
-        {
-            name: "cabillaud",
-            image: "cabillaud.png",
-            value: 200,
-            coordinates: "(90, 80)"
-        }
+        { name: "sardine", image: "sardine.png", value: 10, coordinates: "(30, 20)" },
+        { name: "anchois", image: "anchois.png", value: 100, coordinates: "(50, 40)" },
+        { name: "bar", image: "bar.png", value: 150, coordinates: "(70, 60)" },
+        { name: "cabillaud", image: "cabillaud.png", value: 200, coordinates: "(90, 80)" }
     ];
+
     const canneDict = [
-        {
-            models: "canne simple",
-            image : "canne.webp",
-            value : 100, 
-        },
-        {
-            models: "canne amelioré",
-            image : "cane_a_peche.png",
-            value : 150,  
-        }
+        { models: "canne simple", image: "canne.webp", value: 50 },
+        { models: "canne améliorée", image: "cane_a_peche.png", value: 150 },
+        { models: "fusil harpon", image: "fusil_harpon.png", value: 200 },
+        { models: "fusil harpon cobra", image: "fusil_cobra_carbone.png", value: 250 }
     ];
 
-    // Mettre à jour l'image de la canne à pêche dans le DOM
-    function updateRodImage() {
-        // Chemin de l'image de la canne à pêche de base et de l'image améliorée
-        const baseRodImage = "canne.webp";
-        const improvedRodImage = "cane_a_peche.png"; // Assurez-vous de mettre le chemin correct vers l'image de la nouvelle canne à pêche
-
-        // Vérifier si la canne à pêche a été améliorée
-        if (elements > 0) {
-            // Mettre à jour l'image de la canne à pêche avec l'image améliorée
-            clickButton.src = improvedRodImage;
-        }
+    function updateUI() {
+        fishName.textContent = fishDict[fishIndex].name;
+        fishImage.src = fishDict[fishIndex].image;
+        fishPrice.textContent = `Prix : ${fishDict[fishIndex].value} points`;
+        fishCoordinates.textContent = `Coordonnées : ${fishDict[fishIndex].coordinates}`;
+        pointsDisplay.textContent = points;
+        buyElementButton.textContent = `Améliorer canne à pêche (+1 point/clic) | Prix : ${canneDict[elements].value} points`;
+        buyAutoClickButton.textContent = `Acheter auto-click (+1 point/seconde) | Prix : ${level * 50} points`;
+        updateRodImage();
     }
 
-    // Fonction d'achat d'élément
-    function acheterElement() {
-        if (points >= canneDict[1].value) { // canneDict[1] représente la nouvelle canne à pêche
-            points -= canneDict[1].value;
+    function updateRodImage() {
+        clickButton.src = canneDict[Math.min(elements, canneDict.length - 1)].image;
+    }
+
+    function saveProgression() {
+        localStorage.setItem('points', points.toString());
+        localStorage.setItem('elements', elements.toString());
+        localStorage.setItem('bonus', bonus.toString());
+        localStorage.setItem('auto_click_value', auto_click_value.toString());
+        localStorage.setItem('level', level.toString());
+        localStorage.setItem('fishIndex', fishIndex.toString());
+        localStorage.setItem('clickCount', clickCount.toString());
+        localStorage.setItem('bonusMultiplier', bonusMultiplier.toString());
+    }
+
+    clickButton.addEventListener('click', function() {
+        points += bonus * bonusMultiplier;
+        clickCount++;
+        if (clickCount % 100 === 0) bonusMultiplier *= 2;
+        if (clickCount >= 500) {
+            alert("Félicitations ! Vous avez atteint 500 clics. Vous avez gagné !");
+            clickCount = 0;
+        }
+        updateUI();
+        saveProgression();
+    });
+
+    buyElementButton.addEventListener('click', function() {
+        const upgradeCost = canneDict[Math.min(elements + 1, canneDict.length - 1)].value;
+        if (points >= upgradeCost) {
+            points -= upgradeCost;
             elements++;
-            bonus += 1;
-            level += 1;
-            pointsDisplay.textContent = points;
-            updateShopPrices();
-            updateRodImage(); // Appel de la fonction pour mettre à jour l'image de la canne à pêche
+            bonus++;
+            level++;
+            updateUI();
+            saveProgression();
         } else {
             alert("Vous n'avez pas assez de points pour acheter cet élément.");
         }
-    }
+    });
 
-    // Fonction d'achat de poisson
-    function buyFish() {
-        if (points >= fishDict[fishIndex].value) {
-            points -= fishDict[fishIndex].value;
-            fishIndex++;
-            pointsDisplay.textContent = points;
-            updateFish();
-        } else {
-            alert("Vous n'avez pas assez de points pour acheter ce poisson.");
-        }
-    }
-
-    // Fonction de clic
-    function clic() {
-        points += bonus * bonusMultiplier; // Points gagnés = bonus * multiplicateur de bonus
-        pointsDisplay.textContent = points;
-        clickCount++;
-        updateFishSize();
-
-        // Vérification si le score augmente de 100 points
-        if (clickCount % 100 === 0) {
-            // Double le multiplicateur de bonus pour le prochain clic
-            bonusMultiplier *= 2;
-        }
-
-        // Vérification si le nombre de clics atteint 500
-        if (clickCount >= 500) {
-            alert("Félicitations ! Vous avez atteint 500 clics. Vous avez gagné !");
-            clickCount = 0; // Réinitialisation du nombre de clics
-        }
-    }
-
-    // Fonction d'achat de bonus automatique
-    function buyAutoClick() {
-        if (points >= level * 50) {
-            points -= level * 50;
+    buyAutoClickButton.addEventListener('click', function() {
+        const autoClickCost = level * 50;
+        if (points >= autoClickCost) {
+            points -= autoClickCost;
             auto_click_value++;
-            level += 1;
-            pointsDisplay.textContent = points;
-            updateShopPrices();
+            level++;
+            updateUI();
+            saveProgression();
         } else {
             alert("Vous n'avez pas assez de points pour acheter ce bonus.");
         }
-    }
+    });
 
-    // Mise à jour des prix dans la boutique
-    function updateShopPrices() {
-        buyElementButton.textContent = "Améliorer canne à pêche (+1 point/clic) | prix = " + level * 50 + " points";
-        buyAutoClickButton.textContent = "Acheter un trésor enfoui (+1 point/seconde) | prix = " + level * 50 + " points";
-    }
+    buyButton.addEventListener('click', function() {
+        if (points >= fishDict[fishIndex].value) {
+            points -= fishDict[fishIndex].value;
+            fishIndex = (fishIndex + 1) % fishDict.length;
+            updateUI();
+        } else {
+            alert("Vous n'avez pas assez de points pour acheter ce poisson.");
+        }
+    });
 
-    // Fonction de sauvegarde de la progression
-    function saveProgression() {
-        localStorage.setItem('points', points);
-        localStorage.setItem('elements', elements);
-        localStorage.setItem('bonus', bonus);
-        localStorage.setItem('auto_click_value', auto_click_value);
-        localStorage.setItem('level', level);
-        localStorage.setItem('fishIndex', fishIndex);
-        localStorage.setItem('clickCount', clickCount);
-        localStorage.setItem('bonusMultiplier', bonusMultiplier);
-    }
+    setInterval(function() {
+        if (auto_click_value > 0) {
+            points += auto_click_value;
+            updateUI();
+        }
+    }, 1000);
 
-    // Effet visuel du clic
-    function showClick() {
-        this.style.transform = 'scale(1.2)';
-        setTimeout(() => {
-            this.style.transform = 'scale(1)';
-        }, 20);
-    }
-
-    // Mise à jour des informations sur le poisson
-    function updateFish() {
-        fishName.textContent = fishDict[fishIndex].name;
-        fishImage.src = fishDict[fishIndex].image;
-        fishPrice.textContent = fishDict[fishIndex].value;
-        fishCoordinates.textContent = "Coordonnées : " + fishDict[fishIndex].coordinates;
-    }
-
-    // Gestion des événements
-    updateShopPrices();
-    clickButton.addEventListener('click', clic);
-    clickButton.addEventListener('click', showClick);
-    buyElementButton.addEventListener('click', acheterElement);
-    buyAutoClickButton.addEventListener('click', buyAutoClick);
-    buyButton.addEventListener('click', buyFish);
-
-    // Bonus automatique
-    setInterval(auto_click, 1000);
-
+    updateUI();
 });

@@ -1,0 +1,7 @@
+[
+    { "models": "canne simple", "image": "canne.webp", "value": 50 },
+    { "models": "canne améliorée", "image": "cane_a_peche.png", "value": 150 },
+    { "models": "fusil harpon", "image": "fusil_harpon.png", "value": 200 },
+    { "models": "fusil harpon cobra", "image": "fusil_cobra_carbone.png", "value": 250 }
+]
+
