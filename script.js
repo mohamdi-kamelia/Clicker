@@ -120,6 +120,8 @@ document.addEventListener('DOMContentLoaded', function() {
             fishIndex++;
             pointsDisplay.textContent = points;
             updateFish();
+            // Mettre à jour la couleur de l'échelle lors de l'achat d'un poisson
+            updateDepthColor(fishIndex); // Appel de la fonction ici
             if (fishIndex === 1) { // Vérifie si le quatrième poisson a été pêché
                 changeBackground('assets/photos/Profondeur moyenne.jpg');
             } else if (fishIndex === 2) { // Vérifie si le huitième poisson a été pêché
@@ -129,6 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert("Vous n'avez pas assez de points pour acheter ce poisson.");
         }
     }
+    
     
     // Fonction de clic
     function clic() {
@@ -218,10 +221,52 @@ document.addEventListener('DOMContentLoaded', function() {
             bubble.remove();
         });
     }
+    function createDepthMarkers() {
+        const depthScale = document.getElementById('depthScale');
+        for (let depth = 0; depth <= 8000; depth += 1000) {
+            const marker = document.createElement('div');
+            marker.classList.add('depth-scale-marker');
+            marker.textContent = depth;
+            depthScale.appendChild(marker);
+        }
+    }
+    function updateDepthColor(fishIndex) {
+        const depthScale = document.getElementById('depthScale');
+        if (fishIndex < 1) { // Avant de pêcher le poisson numéro 4
+            depthScale.style.background = `linear-gradient(to bottom, lightblue 0%, lightblue 80%, transparent 80%, transparent 100%)`;
+        } else if (fishIndex < 4) { // Après avoir pêché le poisson numéro 4 et avant de pêcher le poisson numéro 8
+            depthScale.style.background = `linear-gradient(to bottom, lightblue 0%, lightblue 30%, blue 30%, blue 80%, transparent 80%, transparent 100%)`;
+        } else { // Après avoir pêché le poisson numéro 8
+            depthScale.style.background = `linear-gradient(to bottom, lightblue 0%, lightblue 30%, blue 30%, blue 80%, darkblue 80%, green 100%)`;
+        }
+    }
+    function createBubbleAnimation() {
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble-animation';
+        document.body.appendChild(bubble);
+    
+        const screenWidth = window.innerWidth;
+        const randomX = Math.random() * screenWidth;
+        const randomSize = Math.random() * 20 + 10;
+    
+        bubble.style.left = randomX + 'px';
+        bubble.style.width = randomSize + 'px';
+        bubble.style.height = randomSize + 'px';
+    
+        setTimeout(() => {
+            bubble.remove();
+        }, 5000); // Supprime la bulle après 5 secondes
+    }
+    
+    // Appelle la fonction createBubbleAnimation toutes les secondes
+    setInterval(createBubbleAnimation, 1000);
+    
     
     // Gestion des événements
     updateShopPrices();
     updateFish();
+    createDepthMarkers();
+    updateDepthColor(fishIndex);
     clickButton.addEventListener('click', clic);
     clickButton.addEventListener('click', showClick);
     buyElementButton.addEventListener('click', acheterElement);
