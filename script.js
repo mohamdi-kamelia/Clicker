@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Initialisation des variables à partir du stockage local ou avec des valeurs par défaut
-    // localStorage.clear();
+    localStorage.clear();
     let points = parseInt(localStorage.getItem('points')) || 0;
     let elements = parseInt(localStorage.getItem('elements')) || 0;
     let bonus = parseInt(localStorage.getItem('bonus')) || 1;
@@ -64,11 +64,41 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             name: "Truite arc-en-ciel",
             image: "assets/Truite_arc-en-ciel-removebg-preview.png",
-            value: 3000
-        }
+            value: 3000,
+        },
+        {
+            name: "Aiguillat commun",
+            image: "assets/Aiguillat_commun-removebg-preview.png",
+            value: 3500,
+        },
+        {
+            name: "Anguille",
+            image: "assets/Anguille-removebg-preview.png",
+            value: 4000,
+        },
+        {
+            name: "Baliste",
+            image: "assets/Baliste_-removebg-preview.png",
+            value: 4500,
+        },
+        {
+            name: "Castagnole",
+            image: "assets/Grande_Castagnole-removebg-preview.png",
+            value: 5000,
+        },
     ];
-    // Mettre à jour l'image de la canne à pêche dans le DOM
+    
+    function playBackgroundMusic() {
+        const backgroundMusic = new Audio('assets/bubbles-171716.mp3');
+        backgroundMusic.loop = true;
+        backgroundMusic.play();
+    }
+    // Fonction pour changer le fond d'écran
+    function changeBackground(imageUrl) {
+        body.style.backgroundImage = "url('" + imageUrl + "')";
+    }
 
+    // Mettre à jour l'image de la canne à pêche dans le DOM
     function updateRodImage() {
         if (elements == 1) {
             fishingRodImage.src = "assets/canne.webp";
@@ -76,7 +106,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (elements >= 2) {
             fishingRodImage.src = "assets/fusil.png";
         }
-        
     }
 
     function updateFish() {
@@ -91,8 +120,10 @@ document.addEventListener('DOMContentLoaded', function() {
             fishIndex++;
             pointsDisplay.textContent = points;
             updateFish();
-            if (fishIndex >= 4) { // Vérifie si le quatrième poisson a été pêché
-                body.style.backgroundImage = "url('assets/photos/Profondeur moyenne.jpg')";
+            if (fishIndex === 1) { // Vérifie si le quatrième poisson a été pêché
+                changeBackground('assets/photos/Profondeur moyenne.jpg');
+            } else if (fishIndex === 2) { // Vérifie si le huitième poisson a été pêché
+                changeBackground('assets/photos/les-abysses.jpg');
             }
         } else {
             alert("Vous n'avez pas assez de points pour acheter ce poisson.");
@@ -104,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
         points += bonus * bonusMultiplier; // Points gagnés = bonus * multiplicateur de bonus
         pointsDisplay.textContent = points;
         clickCount++;
-        }
+    }
 
     function auto_click() {
         if (auto_click_value > 0) {
@@ -193,7 +224,6 @@ document.addEventListener('DOMContentLoaded', function() {
     updateFish();
     clickButton.addEventListener('click', clic);
     clickButton.addEventListener('click', showClick);
-    clickButton.addEventListener('click', createBubble);
     buyElementButton.addEventListener('click', acheterElement);
     buyAutoClickButton.addEventListener('click', buyAutoClick);
     buyButton.addEventListener('click', buyFish);
