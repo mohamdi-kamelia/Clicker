@@ -148,6 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
         points += bonus * bonusMultiplier; // Points gagnés = bonus * multiplicateur de bonus
         pointsDisplay.textContent = points;
         clickCount++;
+        clickSound.play();
         updateFishSize();
 
         // Vérification si le score augmente de 100 points
@@ -161,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert("Félicitations ! Vous avez atteint 500 clics. Vous avez gagné !");
             clickCount = 0; // Réinitialisation du nombre de clics
         }
-        clickSound.play();
+        
        
     }
     
