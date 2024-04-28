@@ -1,28 +1,30 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // A décommenter pour effacer les données sauvegardées :
+    localStorage.clear();
+
     // Initialisation des variables à partir du stockage local ou avec des valeurs par défaut
-    // localStorage.clear();
     let points = parseInt(localStorage.getItem('points')) || 0;
     let elements = parseInt(localStorage.getItem('elements')) || 0;
     let bonus = parseInt(localStorage.getItem('bonus')) || 1;
-    let auto_click_value = parseInt(localStorage.getItem('auto_click_value')) || 0;
-    let level = parseInt(localStorage.getItem('level')) || 1;
-    let fishIndex = parseInt(localStorage.getItem('fishIndex')) || 0;
-    let clickCount = parseInt(localStorage.getItem('clickCount')) || 0;
-    let bonusMultiplier = parseInt(localStorage.getItem('bonusMultiplier')) || 1;
+    let valeurAutoClick = parseInt(localStorage.getItem('valeurAutoClick')) || 0;
+    let niveau = parseInt(localStorage.getItem('niveau')) || 1;
+    let indexPoisson = parseInt(localStorage.getItem('indexPoisson')) || 0;
+    let compteurClicks = parseInt(localStorage.getItem('compteurClicks')) || 0;
+    let multiplicateur = parseInt(localStorage.getItem('multiplicateur')) || 1;
 
     // Éléments du DOM
-    const pointsDisplay = document.getElementById('points');
-    const clickButton = document.getElementById('fishingRodImage');
-    const buyElementButton = document.getElementById('buyElement');
-    const buyAutoClickButton = document.getElementById('buyTreasure');
-    const fishName = document.getElementById('fishName');
-    const fishImage = document.getElementById('fishImage');
-    const fishPrice = document.getElementById('fishPrice');
-    const buyButton = document.getElementById('buyButton');
+    const affichagePoints = document.getElementById('points');
+    const BoutonClick = document.getElementById('imageCanne');
+    const acheterElementButton = document.getElementById('acheterElement');
+    const boutonAutoClick = document.getElementById('acheterAutoClick');
+    const nomPoisson = document.getElementById('nomPoisson');
+    const imagePoisson = document.getElementById('imagePoisson');
+    const prixPoisson = document.getElementById('prixPoisson');
+    const boutonAcheter = document.getElementById('boutonAcheter');
     const body = document.body;
 
     // Affichage des points
-    pointsDisplay.textContent = points;
+    affichagePoints.textContent = points;
 
     // Dictionnaire des poissons avec les chemins des images corrects
     const fishDict = [
@@ -67,31 +69,32 @@ document.addEventListener('DOMContentLoaded', function() {
             value: 3000
         }
     ];
-    // Mettre à jour l'image de la canne à pêche dans le DOM
 
-    function updateRodImage() {
+    // Mettre à jour l'image de la canne à pêche dans le DOM
+    function miseAJourCanne() {
         if (elements == 1) {
-            fishingRodImage.src = "assets/canne.webp";
+            imageCanne.src = "assets/canne.webp";
         }
         if (elements >= 2) {
-            fishingRodImage.src = "assets/fusil.png";
+            imageCanne.src = "assets/fusil.png";
         }
         
     }
 
-    function updateFish() {
-        fishName.textContent = fishDict[fishIndex].name;
-        fishImage.src = fishDict[fishIndex].image;
-        fishPrice.textContent = fishDict[fishIndex].value;
+    // Mettre à jour l'image du poisson dans le DOM
+    function miseAJourPoisson() {
+        nomPoisson.textContent = fishDict[indexPoisson].name;
+        imagePoisson.src = fishDict[indexPoisson].image;
+        prixPoisson.textContent = fishDict[indexPoisson].value;
     }
 
     // Fonction d'achat de poisson
-    function buyFish() {
-        if (points >= fishDict[fishIndex].value) {
-            fishIndex++;
-            pointsDisplay.textContent = points;
-            updateFish();
-            if (fishIndex >= 4) { // Vérifie si le quatrième poisson a été pêché
+    function pecherPoisson() {
+        if (points >= fishDict[indexPoisson].value) {
+            indexPoisson++;
+            affichagePoints.textContent = points;
+            miseAJourPoisson();
+            if (indexPoisson >= 4) { // Vérifie si le quatrième poisson a été pêché
                 body.style.backgroundImage = "url('assets/photos/Profondeur moyenne.jpg')";
             }
         } else {
@@ -101,105 +104,108 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Fonction de clic
     function clic() {
-        points += bonus * bonusMultiplier; // Points gagnés = bonus * multiplicateur de bonus
-        pointsDisplay.textContent = points;
-        clickCount++;
+        points += bonus * multiplicateur; // Points gagnés = bonus * multiplicateur de bonus
+        affichagePoints.textContent = points;
+        compteurClicks++;
         }
 
+
+    // Fonction gérant le clic automatique
     function auto_click() {
-        if (auto_click_value > 0) {
-            points += auto_click_value;
-            pointsDisplay.textContent = points;
-            for (let i = 0; i < auto_click_value; i++) {
-                createBubble();
+        if (valeurAutoClick > 0) {
+            points += valeurAutoClick;
+            affichagePoints.textContent = points;
+            for (let i = 0; i < valeurAutoClick; i++) {
+                creerBulle();
             };
         }
     }
     
     // Fonction pour acheter un élément
     function acheterElement() {
-        if (points >= Math.floor(level * 50 * Math.pow(1.1, elements)) ){
-            points -= Math.floor(level * 50 * Math.pow(1.1, elements))
+        if (points >= Math.floor(niveau * 50 * Math.pow(1.1, elements)) ){
+            points -= Math.floor(niveau * 50 * Math.pow(1.1, elements))
             elements++;
             bonus += 1;
-            level += 1;
-            pointsDisplay.textContent = points;
-            updateShopPrices();
-            updateRodImage();
+            niveau += 1;
+            affichagePoints.textContent = points;
+            miseAJourPrix();
+            miseAJourCanne();
         } else {
             alert("Vous n'avez pas assez de points pour acheter cet élément.");
         }
     }
 
-    function buyAutoClick() {
-        if (points >= Math.floor(level * 50 * Math.pow(1.1, auto_click_value))) {
-            points -= Math.floor(level * 50 * Math.pow(1.1, auto_click_value));
-            auto_click_value++;
-            level += 1;
-            pointsDisplay.textContent = points;
-            updateShopPrices();
+    // Fonction pour acheter ou améliorer l'auto click
+    function acheterAutoClick() {
+        if (points >= Math.floor(niveau * 50 * Math.pow(1.1, valeurAutoClick))) {
+            points -= Math.floor(niveau * 50 * Math.pow(1.1, valeurAutoClick));
+            valeurAutoClick++;
+            niveau += 1;
+            affichagePoints.textContent = points;
+            miseAJourPrix();
         } else {
             alert("Vous n'avez pas assez de points pour acheter ce bonus.");
         }
     }
 
     // Mise à jour des prix dans la boutique
-    function updateShopPrices() {
-        const elementPrice = Math.floor(level * 50 * Math.pow(1.1, elements)); // Exponential increase
-        const autoClickPrice = Math.floor(level * 50 * Math.pow(1.1, auto_click_value)); // Exponential increase
-        buyElementButton.textContent = "Améliorer canne à pêche (+1 point/clic) | prix = " + elementPrice + " points";
-        buyAutoClickButton.textContent = "Acheter un trésor enfoui (+1 point/seconde) | prix = " + autoClickPrice + " points";
+    function miseAJourPrix() {
+        const elementPrice = Math.floor(niveau * 50 * Math.pow(1.1, elements)); // Exponential increase
+        const autoClickPrice = Math.floor(niveau * 50 * Math.pow(1.1, valeurAutoClick)); // Exponential increase
+        acheterElementButton.textContent = "Améliorer canne à pêche (+1 point/clic) | prix = " + elementPrice + " points";
+        boutonAutoClick.textContent = "Acheter un trésor enfoui (+1 point/seconde) | prix = " + autoClickPrice + " points";
     }  
 
     // Fonction de sauvegarde de la progression
-    function saveProgression() {
+    function sauvegarder() {
         localStorage.setItem('points', points);
         localStorage.setItem('elements', elements);
         localStorage.setItem('bonus', bonus);
-        localStorage.setItem('auto_click_value', auto_click_value);
-        localStorage.setItem('level', level);
-        localStorage.setItem('fishIndex', fishIndex);
-        localStorage.setItem('clickCount', clickCount);
-        localStorage.setItem('bonusMultiplier', bonusMultiplier);
+        localStorage.setItem('valeurAutoClick', valeurAutoClick);
+        localStorage.setItem('niveau', niveau);
+        localStorage.setItem('indexPoisson', indexPoisson);
+        localStorage.setItem('compteurClicks', compteurClicks);
+        localStorage.setItem('multiplicateur', multiplicateur);
     }
 
     // Effet visuel du clic
-    function showClick() {
+    function afficherClic() {
         this.style.transform = 'scale(1.2)';
         setTimeout(() => {
             this.style.transform = 'scale(1)';
         }, 20);
     }
 
-    function createBubble() {
-        const bubble = document.createElement('div');
-        bubble.className = 'bubble';
+    // Fonction pour créer une bulle ) chaque clic
+    function creerBulle() {
+        const bulle = document.createElement('div');
+        bulle.className = 'bulle';
 
         const screenWidth = window.innerWidth;
         const randomX = Math.random() * screenWidth;
 
-        bubble.style.left = randomX + 'px';
-        bubble.style.top = '700px';
-        document.body.appendChild(bubble);
+        bulle.style.left = randomX + 'px';
+        bulle.style.top = '700px';
+        document.body.appendChild(bulle);
     
-        // Remove the bubble element after the animation ends
-        bubble.addEventListener('animationend', () => {
-            bubble.remove();
+        bulle.addEventListener('animationend', () => {
+            bulle.remove();
         });
     }
     
     // Gestion des événements
-    updateShopPrices();
-    updateFish();
-    clickButton.addEventListener('click', clic);
-    clickButton.addEventListener('click', showClick);
-    clickButton.addEventListener('click', createBubble);
-    buyElementButton.addEventListener('click', acheterElement);
-    buyAutoClickButton.addEventListener('click', buyAutoClick);
-    buyButton.addEventListener('click', buyFish);
+    miseAJourPrix();
+    miseAJourPoisson();
+    BoutonClick.addEventListener('click', clic);
+    BoutonClick.addEventListener('click', afficherClic);
+    BoutonClick.addEventListener('click', creerBulle);
+    acheterElementButton.addEventListener('click', acheterElement);
+    boutonAutoClick.addEventListener('click', acheterAutoClick);
+    boutonAcheter.addEventListener('click', pecherPoisson);
 
     // Sauvegarde automatique toutes les 10 secondes
-    setInterval(saveProgression, 10000);
+    setInterval(sauvegarder, 10000);
 
     // Bonus automatique
     setInterval(auto_click, 1000);
