@@ -2,7 +2,7 @@ import { affichagePoints, BoutonClick, acheterElementButton, boutonAutoClick, bo
 
 document.addEventListener('DOMContentLoaded', function() {
     // A décommenter pour effacer les données sauvegardées :
-    // localStorage.clear();
+    localStorage.clear();
 
     // Initialisation des variables à partir du stockage local ou avec des valeurs par défaut
     let points = parseInt(localStorage.getItem('points')) || 0;
