@@ -1,0 +1,9 @@
+export const affichagePoints = document.getElementById('points');
+export const BoutonClick = document.getElementById('imageCanne');
+export const acheterElementButton = document.getElementById('acheterElement');
+export const boutonAutoClick = document.getElementById('acheterAutoClick');
+export const nomPoisson = document.getElementById('nomPoisson');
+export const imagePoisson = document.getElementById('imagePoisson');
+export const prixPoisson = document.getElementById('prixPoisson');
+export const boutonAcheter = document.getElementById('boutonAcheter');
+export const body = document.body;

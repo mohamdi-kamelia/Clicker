@@ -1,6 +1,8 @@
+import { affichagePoints, BoutonClick, acheterElementButton, boutonAutoClick, boutonAcheter, nomPoisson, imagePoisson, prixPoisson, body } from './constantes.js';
+
 document.addEventListener('DOMContentLoaded', function() {
     // A décommenter pour effacer les données sauvegardées :
-    localStorage.clear();
+    // localStorage.clear();
 
     // Initialisation des variables à partir du stockage local ou avec des valeurs par défaut
     let points = parseInt(localStorage.getItem('points')) || 0;
@@ -13,15 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let multiplicateur = parseInt(localStorage.getItem('multiplicateur')) || 1;
 
     // Éléments du DOM
-    const affichagePoints = document.getElementById('points');
-    const BoutonClick = document.getElementById('imageCanne');
-    const acheterElementButton = document.getElementById('acheterElement');
-    const boutonAutoClick = document.getElementById('acheterAutoClick');
-    const nomPoisson = document.getElementById('nomPoisson');
-    const imagePoisson = document.getElementById('imagePoisson');
-    const prixPoisson = document.getElementById('prixPoisson');
-    const boutonAcheter = document.getElementById('boutonAcheter');
-    const body = document.body;
+
 
     // Affichage des points
     affichagePoints.textContent = points;
@@ -195,6 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Gestion des événements
+    miseAJourCanne();
     miseAJourPrix();
     miseAJourPoisson();
     BoutonClick.addEventListener('click', clic);
