@@ -1,0 +1,63 @@
+[
+    {
+        "name": "sardine",
+        "image": "assets/sardine.png",
+        "value": 10
+    },
+    {
+        "name": "anchois",
+        "image": "assets/anchois.png",
+        "value": 100
+    },
+    {
+        "name": "bar",
+        "image": "assets/bar.png",
+        "value": 500
+    },
+    {
+        "name": "cabillaud",
+        "image": "assets/cabillaud.png",
+        "value": 1000
+    },
+    {
+        "name": "Carpe",
+        "image": "assets/carpe-removebg-preview.png",
+        "value": 1500
+    },
+    {
+        "name": "Tambour",
+        "image": "assets/Tambour-removebg-preview.png",
+        "value": 2000
+    },
+    {
+        "name": "Thon",
+        "image": "assets/thon-removebg-preview.png",
+        "value": 2500
+    },
+    {
+        "name": "Truite arc-en-ciel",
+        "image": "assets/Truite_arc-en-ciel-removebg-preview.png",
+        "value": 3000
+    },
+    {
+        "name": "Aiguillat commun",
+        "image": "assets/Aiguillat_commun-removebg-preview.png",
+        "value": 3500
+    },
+    {
+        "name": "Anguille",
+        "image": "assets/Anguille-removebg-preview.png",
+        "value": 4000
+    },
+    {
+        "name": "Baliste",
+        "image": "assets/Baliste_-removebg-preview.png",
+        "value": 4500
+    },
+    {
+        "name": "Castagnole",
+        "image": "assets/Grande_Castagnole-removebg-preview.png",
+        "value": 5000
+    }
+]
+
